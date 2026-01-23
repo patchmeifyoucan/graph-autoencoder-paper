@@ -1,25 +1,34 @@
 \section{Introduction}\label{sec:introduction}
 Autoencoders are a popular and simple method for unsupervised representation learning.
-By mapping inputs to a low-dimensional latent representation and training a decoder to reconstruct this input,
+By mapping an input to a low-dimensional latent representation and training a decoder to reconstruct it,
 they extract the most salient features of this input.
-There exists a large variety of autoencoders, including the standard autoencoder~\cite{hinton2006autoencoder},
-denoising autoencoders~\cite{vincent2008dae}, sparse autoencoder~\cite{ng2011sparseae},
+There exists a large variety of autoencoders, including the standard autoencoders~\cite{hinton2006autoencoder},
+denoising autoencoders~\cite{vincent2008dae}, sparse autoencoders~\cite{ng2011sparseae},
 masked autoencoders~\cite{he2022mae}, or variational autoencoders~\cite{vaes}.
 They have been applied for representation learning of different modalities like
 images~\cite{hinton2006autoencoder,vincent2008dae}, text~\cite{bowman2016generating}, and sound~\cite{zeghidour2021soundstream},
-which have well-defined input-output mappings.
+which have well-defined input-output mappings in terms of their representation.
+
 Another widely used modality is a graph modeling relationships between entities.
 However, autoencoders for graphs are a relatively understudied subfield as the optimization of graphs
-as neural networks output poses unique challenges.
+as neural network outputs poses unique challenges.
 Besides their discrete and variable-sized nature, which also hold for text, it is their combinatorial
 and unordered nature that prevents direct, end-to-end optimization of the input-output mapping.
 The fundamental difficulty is related to graph isomorphism, i.e., by permuting the node order, we do not
 change the object we represent.
-As such, a graph with $n$ nodes can be represented by $n!$ unique but equivalent representations, makes gradient
-descent on the neural network output ineffective as the loss is not unique for a particular prediction.
+As such, a graph with $n$ nodes can be represented by $n!$ unique but equivalent representations, which
+makes gradient descent on the neural network output ineffective as the loss is not unique for a particular prediction.
 Therefore, the first variational graph autoencoders~\cite{vgae} only decoded the adjacency between
 node embeddings rather than the full graph embedding.
-However, this does not unlock the full potential as only a graph-level is meaningful, for example, to interpolate
-between variable-sized graphs or generate new ones by modifying the latent code.
+However, this does not unlock the full potential as only a graph-level representation is meaningful, for example,
+to interpolate between variable-sized graphs or generate new ones by modifying the latent code.
 As a consequence, a few graph-level methods have been proposed so far, all of which use some form of
-node matching\cite{winter2021pigvae,any2graph2024,grale2025}.
+node matching~\cite{winter2021pigvae,any2graph2024,grale2025} internally.
+
+Unfortunately, while direct optimization of the output is straightforward and computationally efficient,
+it must inherently deal with the problem of graph isomorphism.
+In this work, we show that we can avoid dealing with graph isomorphism by framing the problem
+as a sequential search procedure over graphs, which removes the dependence on node orderings completely.
+By deciding at each step whether a particular graph fragment lies on a path towards the target, we are
+able to build latent-to-graph decoders that significantly outperform the state-of-the-art in terms of
+generating the correct graph from the latent.
