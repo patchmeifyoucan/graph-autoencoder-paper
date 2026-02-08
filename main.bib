@@ -1,4 +1,26 @@
-% === General Autoencoders
+% === Deterministic Autoencoders
+
+@article{rumelhart1986learning,
+    title = {Learning representations by back-propagating errors},
+    author = {Rumelhart, David E and Hinton, Geoffrey E and Williams, Ronald J},
+    journal = {nature},
+    volume = {323},
+    number = {6088},
+    pages = {533--536},
+    year = {1986},
+    publisher = {Nature Publishing Group UK London}
+}
+
+@article{baldi1989neural,
+    title = {Neural networks and principal component analysis: Learning from examples without local minima},
+    author = {Baldi, Pierre and Hornik, Kurt},
+    journal = {Neural networks},
+    volume = {2},
+    number = {1},
+    pages = {53--58},
+    year = {1989},
+    publisher = {Elsevier}
+}
 
 @article{hinton2006autoencoder,
     title = {Reducing the Dimensionality of Data with Neural Networks},
@@ -36,6 +58,40 @@
     url = {https://web.stanford.edu/class/cs294a/sparseAutoencoder_2011new.pdf}
 }
 
+@inproceedings{larsen2016vaegan,
+    title = {Autoencoding beyond pixels using a learned similarity metric},
+    author = {Larsen, Anders Boesen Lindbo and S{\o}nderby, S{\o}ren Kaae and Larochelle, Hugo and Winther, Ole},
+    booktitle = {Proceedings of the 33rd International Conference on Machine Learning (ICML)},
+    year = {2016},
+    url = {https://arxiv.org/abs/1512.09300}
+}
+
+@article{bowman2016generating,
+    title = {Generating Sentences from a Continuous Space},
+    author = {Bowman, Samuel R. and Vilnis, Luke and Vinyals, Oriol and Dai, Andrew M. and Jozefowicz, Rafal and Bengio, Samy},
+    journal = {arXiv preprint arXiv:1511.06349},
+    year = {2016},
+    url = {https://arxiv.org/abs/1511.06349}
+}
+
+@inproceedings{he2022mae,
+    title = {Masked Autoencoders Are Scalable Vision Learners},
+    author = {He, Kaiming and Chen, Xinlei and Xie, Saining and Li, Yanghao and Doll{\'a}r, Piotr and Girshick, Ross},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    year = {2022},
+    url = {https://arxiv.org/abs/2111.06377}
+}
+
+@article{zeghidour2021soundstream,
+    title = {SoundStream: An End-to-End Neural Audio Codec},
+    author = {Zeghidour, Neil and Luebs, Adam and Omran, Ahmed and Skoglund, Jan and Tagliasacchi, Marco},
+    journal = {arXiv preprint arXiv:2107.03312},
+    year = {2021},
+    url = {https://arxiv.org/abs/2107.03312}
+}
+
+% === Stochastic Autoencoders
+
 @inproceedings{vaes,
     author = {Diederik P. Kingma and Max Welling},
     editor = {Yoshua Bengio and Yann LeCun},
@@ -48,6 +104,14 @@
     bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
+@inproceedings{rezende2014stochastic,
+    title = {Stochastic backpropagation and approximate inference in deep generative models},
+    author = {Rezende, Danilo J. and Mohamed, Shakir and Wierstra, Daan},
+    booktitle = {International Conference on Machine Learning},
+    pages = {1278--1286},
+    year = {2014}
+}
+
 @article{makhzani2015aae,
     title = {Adversarial Autoencoders},
     author = {Makhzani, Alireza and Shlens, Jonathon and Jaitly, Navdeep and Goodfellow, Ian},
@@ -56,12 +120,20 @@
     url = {https://arxiv.org/abs/1511.05644}
 }
 
-@inproceedings{larsen2016vaegan,
-    title = {Autoencoding beyond pixels using a learned similarity metric},
-    author = {Larsen, Anders Boesen Lindbo and S{\o}nderby, S{\o}ren Kaae and Larochelle, Hugo and Winther, Ole},
-    booktitle = {Proceedings of the 33rd International Conference on Machine Learning (ICML)},
-    year = {2016},
-    url = {https://arxiv.org/abs/1512.09300}
+@inproceedings{sonderby2016ladder,
+  title={Ladder Variational Autoencoders},
+  author={S{\o}nderby, Casper Kaae and Raiko, Tapani and Maal{\o}e, Lars and S{\o}nderby, S{\o}ren Kaae and Winther, Ole},
+  booktitle={Advances in Neural Information Processing Systems},
+  volume={29},
+  pages={3738--3746},
+  year={2016}
+}
+
+@article{higgins2017beta,
+  title={beta-VAE: Learning basic visual concepts with a constrained variational framework},
+  author={Higgins, Irina and Matthey, Loic and Pal, Arka and others},
+  journal={International Conference on Learning Representations},
+  year={2017}
 }
 
 @article{oord2017vqvae,
@@ -72,6 +144,15 @@
     url = {https://arxiv.org/abs/1711.00937}
 }
 
+@inproceedings{razavi2019generating,
+  title={Generating Diverse High-Fidelity Images with VQ-VAE-2},
+  author={Razavi, Ali and van den Oord, Aaron and Vinyals, Oriol},
+  booktitle={Advances in Neural Information Processing Systems},
+  volume={32},
+  pages={14837--14847},
+  year={2019}
+}
+
 @article{tolstikhin2017wae,
     title = {Wasserstein Auto-Encoders},
     author = {Tolstikhin, Ilya and Bousquet, Olivier and Gelly, Sylvain and Sch{\"o}lkopf, Bernhard},
@@ -80,37 +161,14 @@
     url = {https://arxiv.org/abs/1711.01558}
 }
 
-@inproceedings{he2022mae,
-    title = {Masked Autoencoders Are Scalable Vision Learners},
-    author = {He, Kaiming and Chen, Xinlei and Xie, Saining and Li, Yanghao and Doll{\'a}r, Piotr and Girshick, Ross},
-    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-    year = {2022},
-    url = {https://arxiv.org/abs/2111.06377}
-}
-
-@article{bowman2016generating,
-    title = {Generating Sentences from a Continuous Space},
-    author = {Bowman, Samuel R. and Vilnis, Luke and Vinyals, Oriol and Dai, Andrew M. and Jozefowicz, Rafal and Bengio, Samy},
-    journal = {arXiv preprint arXiv:1511.06349},
-    year = {2016},
-    url = {https://arxiv.org/abs/1511.06349}
-}
-
-@article{zeghidour2021soundstream,
-    title = {SoundStream: An End-to-End Neural Audio Codec},
-    author = {Zeghidour, Neil and Luebs, Adam and Omran, Ahmed and Skoglund, Jan and Tagliasacchi, Marco},
-    journal = {arXiv preprint arXiv:2107.03312},
-    year = {2021},
-    url = {https://arxiv.org/abs/2107.03312}
-}
-
 % === Graph Autoencoders
+
 @inproceedings{winter2021pigvae,
-  title     = {Permutation-Invariant Variational Autoencoder for Graph-Level Representation Learning},
-  author    = {Winter, Robin and No{\'e}, Frank and Clevert, Djork-Arn{\'e}},
-  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
-  year      = {2021},
-  url       = {https://proceedings.neurips.cc/paper_files/paper/2021/hash/4f3d7d38d24b740c95da2b03dc3a2333-Abstract.html}
+    title = {Per1mutation-Invariant Variational Autoencoder for Graph-Level Representation Learning},
+    author = {Winter, Robin and No{\'e}, Frank and Clevert, Djork-Arn{\'e}},
+    booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+    year = {2021},
+    url = {https://proceedings.neurips.cc/paper_files/paper/2021/hash/4f3d7d38d24b740c95da2b03dc3a2333-Abstract.html}
 }
 
 @inproceedings{any2graph2024,
@@ -178,4 +236,40 @@
     pages = {412--422},
     year = {2018},
     organization = {Springer}
+}
+
+@inproceedings{hou2022graphmae,
+  title={Graphmae: Self-supervised masked graph autoencoders},
+  author={Hou, Zhenyu and Liu, Xiao and Cen, Yukuo and Dong, Yuxiao and Yang, Hongxia and Wang, Chunjie and Tang, Jie},
+  booktitle={Proceedings of the 28th ACM SIGKDD conference on knowledge discovery and data mining},
+  pages={594--604},
+  year={2022}
+}
+
+
+# Molecule Generators
+@inproceedings{jtvae,
+  title={Junction tree variational autoencoder for molecular graph generation},
+  author={Jin, Wengong and Barzilay, Regina and Jaakkola, Tommi},
+  booktitle={International conference on machine learning},
+  pages={2323--2332},
+  year={2018},
+  organization={PMLR}
+}
+
+
+@inproceedings{jin2020hierarchical,
+  title={Hierarchical generation of molecular graphs using structural motifs},
+  author={Jin, Wengong and Barzilay, Regina and Jaakkola, Tommi},
+  booktitle={International conference on machine learning},
+  pages={4839--4848},
+  year={2020},
+  organization={PMLR}
+}
+
+@article{kearnes2019decoding,
+  title={Decoding molecular graph embeddings with reinforcement learning},
+  author={Kearnes, Steven and Li, Li and Riley, Patrick},
+  journal={arXiv preprint arXiv:1904.08915},
+  year={2019}
 }

@@ -1,1 +1,100 @@
 \section{Related Work}\label{sec:related-work}
+Autoencoders are a well-studied method for unsupervised representation learning.
+High-dimensional inputs are mapped to a lower-dimensional representation by an encoder, serving as a form
+of compression.
+A decoder maps back the lower-dimensional representation back to the high-dimensional input, serving as a
+form of decompression.
+By learning the input-output mapping end-to-end, the model can learn to store only what is necessary in
+the latent representation.
+Due to their simplicity, autoencoders have been used for representation learning for every common domain.
+In this section, we review the most common families of autoencoders with a focus on the graph domain, which
+poses unique challenges in this framework.
+
+Early work introduces autoencoders~\cite{rumelhart1986learning,baldi1989neural,hinton2006autoencoder}
+as a form of non-linear dimensionality reduction.
+
+\begin{enumerate}
+    \item \cite{hinton2006autoencoder} (\citeyear{hinton2006autoencoder})
+    \begin{itemize}
+        \item early autoencoder
+        \item in general, nothing forces AE to extract structure at all
+    \end{itemize}
+
+    \item \cite{vincent2008dae} (\citeyear{vincent2008dae})
+    \begin{itemize}
+        \item denoising autoencoder aims to improve robustness of standard autoencoder
+    \end{itemize}
+
+    \item \cite{rifai2011cae} (\citeyear{rifai2011cae})
+    \begin{itemize}
+        \item contractive AEs also aim to learn robust representations by penalizing
+        sensitivity as measured as the Frobenius norm of the Jacobian
+    \end{itemize}
+
+    \item \cite{ng2011sparseae} (\citeyear{ng2011sparseae})
+    \begin{itemize}
+        \item sparse autoencoders
+    \end{itemize}
+
+    \item \cite{vgae} (\citeyear{vgae})
+    \begin{itemize}
+        \item original graph VAE, trains with EBLO, but evaluation is only done on link prediction tasks, on one large graph
+    \end{itemize}
+
+    \item \cite{larsen2016vaegan} (\citeyear{larsen2016vaegan})
+    \begin{itemize}
+        \item combines VAE and GAN
+    \end{itemize}
+
+    \item \cite{graphvae} (\citeyear{graphvae})
+    \begin{itemize}
+        \item next graph VAE, that actually is used as a generative model, probabilistic, fully-connected output, uses graph matching
+    \end{itemize}
+
+    \item \cite{hou2022graphmae} (\citeyear{hou2022graphmae})
+    \begin{itemize}
+        \item masked AE that works in node embeddings, with different masking strategies
+    \end{itemize}
+
+    \item \cite{winter2021pigvae} (\citeyear{winter2021pigvae})
+    \begin{itemize}
+        \item learns graph matching
+        \item needs ground-truth size
+    \end{itemize}
+
+    \item \cite{any2graph2024} (\citeyear{any2graph2024})
+    \begin{itemize}
+        \item precursor to GRALE, also uses OT, in contrast is size agnostic (how?)
+    \end{itemize}
+
+    \item \cite{grale2025} (\citeyear{grale2025})
+    \begin{itemize}
+        \item learns ordering via optimal transport
+    \end{itemize}
+
+    \item \cite{jtvae} (\citeyear{jtvae})
+    \begin{itemize}
+        \item contracts graph into an element tree, need pre-processing
+        \item unclear why this needs to be variational
+        \item learning predicts the connections of subgraphs to the tree
+        \item \textbf{encoding and decoding is stochastic, our method is exact}
+        \item \textbf{scoring remotely similar, but subgraph decoding does not have all this model machinery}
+        \item \textbf{\red{they use ZINC and achieve a reconstruction accuracy of 76.7\%, this is easily beatable}}
+        \item also the argument that atom-by-atom generates invalid results is not always true
+    \end{itemize}
+
+    \item \cite{jin2020hierarchical} (\citeyear{jin2020hierarchical})
+    \begin{itemize}
+        \item uses larger motifs, depends on extracting them, paper extracts 436 different ones
+    \end{itemize}
+
+    \item \cite{kearnes2019decoding} (\citeyear{kearnes2019decoding})
+    \begin{itemize}
+        \item uses RL, achieved only 66\% on QM9, also reports that \cite{jtvae} also does not achieve much higher accuracies
+    \end{itemize}
+
+
+\end{enumerate}
+
+\red{TODO: make table with columns showing node/graph task, whether graph matching is used, whether padding is used etc}
+\red{TODO: if easily doable, could try the whole pipeline with fixed encoders like fingerprints but likely overkill}

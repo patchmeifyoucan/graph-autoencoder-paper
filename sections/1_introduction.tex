@@ -20,7 +20,7 @@ As such, a graph with $n$ nodes can be represented by $n!$ unique but equivalent
 makes gradient descent on the neural network output ineffective as the loss is not unique for a particular prediction.
 Therefore, the first variational graph autoencoders~\cite{vgae} only decoded the adjacency between
 node embeddings rather than the full graph embedding.
-However, this does not unlock the full potential as only a graph-level representation is meaningful, for example,
+However, this does not unlock the full potential as only a graph-level representation is truly meaningful, for example,
 to interpolate between variable-sized graphs or generate new ones by modifying the latent code.
 As a consequence, a few graph-level methods have been proposed so far, all of which use some form of
 node matching~\cite{winter2021pigvae,any2graph2024,grale2025} internally.
@@ -32,3 +32,8 @@ as a sequential search procedure over graphs, which removes the dependence on no
 By deciding at each step whether a particular graph fragment lies on a path towards the target, we are
 able to build latent-to-graph decoders that significantly outperform the state-of-the-art in terms of
 generating the correct graph from the latent.
+
+\red{
+    Explain why "auto-encoding" graphs may not make a lot of sense since the majority aims to
+    solve an ill-posed problem by learning to generate a canonical order.
+}
