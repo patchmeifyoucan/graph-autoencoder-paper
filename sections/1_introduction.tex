@@ -1,5 +1,19 @@
 \section{Introduction}\label{sec:introduction}
-Autoencoders are a popular and simple method for unsupervised representation learning.
+Graph Neural Networks (GNNs) are a popular choice for learning tasks on graphs.
+Examples include molecules~\cite{gilmer2017mpnn}, road networks~\cite{derrow2021eta},
+or social and citation networks~\cite{kipf2017gcn}.
+The power of GNNs stems from their ability to encode complex, discrete objects
+into dense, semantic vectors serving as the representation of a graph.
+They do so by iteratively propagating node features across neighbors, potentially taking
+edge features into account.
+In a final global pooling step, the node information is fused into a graph-level embedding
+representing the graph.
+However, recovering the graph input from the embedding poses several challenges, as the
+vector only semantically encodes information like graph size, type distributions, and connectivity.
+
+Traditionally, encoding-decoding tasks are formulated under the umbrella term of \red{autoencoders}, where a
+neural network learns to map a high-dimensional object to a lower-dimensional code while being
+able to map back the code to the input representation.
 By mapping an input to a low-dimensional latent representation and training a decoder to reconstruct it,
 they extract the most salient features of this input.
 There exists a large variety of autoencoders, including the standard autoencoders~\cite{hinton2006autoencoder},
@@ -9,21 +23,22 @@ They have been applied for representation learning of different modalities like
 images~\cite{hinton2006autoencoder,vincent2008dae}, text~\cite{bowman2016generating}, and sound~\cite{zeghidour2021soundstream},
 which have well-defined input-output mappings in terms of their representation.
 
-Another widely used modality is a graph modeling relationships between entities.
-However, autoencoders for graphs are a relatively understudied subfield as the optimization of graphs
-as neural network outputs poses unique challenges.
+In general, mapping back a graph embedding to a graph representation is challenging for the following reasons.
 Besides their discrete and variable-sized nature, which also hold for text, it is their combinatorial
 and unordered nature that prevents direct, end-to-end optimization of the input-output mapping.
 The fundamental difficulty is related to graph isomorphism, i.e., by permuting the node order, we do not
 change the object we represent.
 As such, a graph with $n$ nodes can be represented by $n!$ unique but equivalent representations, which
-makes gradient descent on the neural network output ineffective as the loss is not unique for a particular prediction.
+makes gradient descent on the neural network output ill-posed as the loss is not unique for a particular prediction.
+As such, autoencoders for graphs are a relatively understudied subfield as the optimization of graphs
+as neural network outputs poses unique challenges.
 Therefore, the first variational graph autoencoders~\cite{vgae} only decoded the adjacency between
 node embeddings rather than the full graph embedding.
 However, this does not unlock the full potential as only a graph-level representation is truly meaningful, for example,
 to interpolate between variable-sized graphs or generate new ones by modifying the latent code.
 As a consequence, a few graph-level methods have been proposed so far, all of which use some form of
 node matching~\cite{winter2021pigvae,any2graph2024,grale2025} internally.
+
 
 Unfortunately, while direct optimization of the output is straightforward and computationally efficient,
 it must inherently deal with the problem of graph isomorphism.
