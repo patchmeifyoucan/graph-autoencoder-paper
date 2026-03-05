@@ -8,47 +8,36 @@ They do so by iteratively propagating node features across neighbors, potentiall
 edge features into account.
 In a final global pooling step, the node information is fused into a graph-level embedding
 representing the graph.
+
 However, recovering the graph input from the embedding poses several challenges, as the
 vector only semantically encodes information like graph size, type distributions, and connectivity.
-
-Traditionally, encoding-decoding tasks are formulated under the umbrella term of \red{autoencoders}, where a
+Traditionally, encoding-decoding tasks are formulated under the umbrella term of autoencoders, where a
 neural network learns to map a high-dimensional object to a lower-dimensional code while being
 able to map back the code to the input representation.
 By mapping an input to a low-dimensional latent representation and training a decoder to reconstruct it,
 they extract the most salient features of this input.
-There exists a large variety of autoencoders, including the standard autoencoders~\cite{hinton2006autoencoder},
-denoising autoencoders~\cite{vincent2008dae}, sparse autoencoders~\cite{ng2011sparseae},
+Due to their simplicity, the community proposed different kinds of autoencoders, including the standard
+autoencoders~\cite{hinton2006autoencoder}, denoising autoencoders~\cite{vincent2008dae}, sparse autoencoders~\cite{ng2011sparseae},
 masked autoencoders~\cite{he2022mae}, or variational autoencoders~\cite{vaes}.
 They have been applied for representation learning of different modalities like
 images~\cite{hinton2006autoencoder,vincent2008dae}, text~\cite{bowman2016generating}, and sound~\cite{zeghidour2021soundstream},
 which have well-defined input-output mappings in terms of their representation.
 
-In general, mapping back a graph embedding to a graph representation is challenging for the following reasons.
-Besides their discrete and variable-sized nature, which also hold for text, it is their combinatorial
+Mapping back a graph embedding to a graph representation is challenging for the following reasons.
+Besides their discrete and variable-sized nature, which also holds for images and text, it is their combinatorial
 and unordered nature that prevents direct, end-to-end optimization of the input-output mapping.
 The fundamental difficulty is related to graph isomorphism, i.e., by permuting the node order, we do not
-change the object we represent.
-As such, a graph with $n$ nodes can be represented by $n!$ unique but equivalent representations, which
-makes gradient descent on the neural network output ill-posed as the loss is not unique for a particular prediction.
-As such, autoencoders for graphs are a relatively understudied subfield as the optimization of graphs
-as neural network outputs poses unique challenges.
-Therefore, the first variational graph autoencoders~\cite{vgae} only decoded the adjacency between
-node embeddings rather than the full graph embedding.
-However, this does not unlock the full potential as only a graph-level representation is truly meaningful, for example,
-to interpolate between variable-sized graphs or generate new ones by modifying the latent code.
-As a consequence, a few graph-level methods have been proposed so far, all of which use some form of
-node matching~\cite{winter2021pigvae,any2graph2024,grale2025} internally.
+change the object we represent, and the same graph with $n$ nodes can be represented by $n!$ unique but equivalent representations.
+In addition, gradient descent assumes entries in the output to be i.i.d., which is not true for graphs.
+In practice this means that by changing only one entry in an otherwise perfectly modeled output, one can create arbitrarily
+large errors in the actual representation which is not reflected the same way by the loss.
+The reconstruction target is an isomorphism class rather than a single point in space, and as a consequence,
+typical decoders are supervised against a single ordered representative.
 
-
-Unfortunately, while direct optimization of the output is straightforward and computationally efficient,
-it must inherently deal with the problem of graph isomorphism.
+Given these fundamental issues, we believe that optimizing a graph's output representation directly via gradient descent is inherently
+ill-posed for graph reconstruction or decoding.
 In this work, we show that we can avoid dealing with graph isomorphism by framing the problem
-as a sequential search procedure over graphs, which removes the dependence on node orderings completely.
+as a sequential search procedure over embeddings of partial graphs, which removes the dependence on node orderings completely.
 By deciding at each step whether a particular graph fragment lies on a path towards the target, we are
 able to build latent-to-graph decoders that significantly outperform the state-of-the-art in terms of
 generating the correct graph from the latent.
-
-\red{
-    Explain why "auto-encoding" graphs may not make a lot of sense since the majority aims to
-    solve an ill-posed problem by learning to generate a canonical order.
-}

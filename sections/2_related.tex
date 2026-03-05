@@ -1,4 +1,25 @@
 \section{Related Work}\label{sec:related-work}
+\textcolor{red}{TODO: section should review not autoencoder but generators of graphs, where decoders are one special case.}
+\textcolor{red}{TODO: even GRALE is not 100\% unsupervised since labels are generated for matching}
+%In the realm of graph generative modeling, there exist two classes of algorithms for graph generation.
+%The first class generates graphs within a feedforward architecture and must account for the
+%node order and validity~\cite{graphvae,de2018molgan,edmdiffusion,digress}.
+%
+%In practice, this often amounts to imposing or implicitly learning a canonicalization to make the reconstruction loss well-defined.
+%The second class generates graphs sequentially, and as such the node ordering becomes
+%implicit but needs to introduce training and inference procedures~\cite{graphrnn,gran,learning-deep-gen-graphs}.
+%From the perspective of ill-posed reconstruction, sequential generation deserves particular attention:
+%it naturally supports decoding as a trajectory over partial graphs and can avoid supervising an arbitrary global permutation at the output.
+
+
+%As such, autoencoders for graphs are a relatively understudied subfield as the optimization of graphs
+%as neural network outputs poses unique challenges.
+%Therefore, the first variational graph autoencoders~\cite{vgae} only decoded the adjacency between
+%node embeddings rather than the full graph embedding.
+%However, this does not unlock the full potential as only a graph-level representation is truly meaningful, for example,
+%to interpolate between variable-sized graphs or generate new ones by modifying the latent code.
+%As a consequence, a few graph-level methods have been proposed so far, all of which use some form of
+%node matching~\cite{winter2021pigvae,any2graph2024,grale2025} internally.
 Autoencoders are a well-studied method for unsupervised representation learning.
 High-dimensional inputs are mapped to a lower-dimensional representation by an encoder, serving as a form
 of compression.
@@ -95,6 +116,3 @@ as a form of non-linear dimensionality reduction.
 
 
 \end{enumerate}
-
-\red{TODO: make table with columns showing node/graph task, whether graph matching is used, whether padding is used etc}
-\red{TODO: if easily doable, could try the whole pipeline with fixed encoders like fingerprints but likely overkill}
