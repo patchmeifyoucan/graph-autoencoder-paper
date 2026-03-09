@@ -1,98 +1,57 @@
-\section{Related Work}\label{sec:related-work}
+\section{Related work}\label{sec:related-work}
 \textcolor{red}{TODO: section should review not autoencoder but generators of graphs, where decoders are one special case.}
 \textcolor{red}{TODO: even GRALE is not 100\% unsupervised since labels are generated for matching}
-%In the realm of graph generative modeling, there exist two classes of algorithms for graph generation.
-%The first class generates graphs within a feedforward architecture and must account for the
-%node order and validity~\cite{graphvae,de2018molgan,edmdiffusion,digress}.
-%
-%In practice, this often amounts to imposing or implicitly learning a canonicalization to make the reconstruction loss well-defined.
-%The second class generates graphs sequentially, and as such the node ordering becomes
-%implicit but needs to introduce training and inference procedures~\cite{graphrnn,gran,learning-deep-gen-graphs}.
-%From the perspective of ill-posed reconstruction, sequential generation deserves particular attention:
-%it naturally supports decoding as a trajectory over partial graphs and can avoid supervising an arbitrary global permutation at the output.
 
+In this section, we review methods for graph generation from two branches in the literature.
+First, from the point of view of graph generative modeling, we highlight common problems and solutions
+when generating graphs.
+Second, we review the literature on the more recently proposed graph autoencoders, aim to generate
+a particular graph from a latent representation.
+There is no strict separation between these two fields as they solve related problems.
+The main difference is that graph generative models aim to learn to generate graphs from a particular graph distribution
+whereas graph autoencoders aim to generate a particular graphs.
+Central to both branches is the exact procedure generating the graphs.
+As such, the concept of variational graph autoencoders lies in between these two branches.\\
+\textcolor{red}{TODO: organize section such that the flow goes from generative $\rightarrow$ generative AE $\rightarrow$ AE}
+\textcolor{red}{TODO: explain that only work is reviewed that focuses on generation and not other problems}
 
-%As such, autoencoders for graphs are a relatively understudied subfield as the optimization of graphs
-%as neural network outputs poses unique challenges.
-%Therefore, the first variational graph autoencoders~\cite{vgae} only decoded the adjacency between
-%node embeddings rather than the full graph embedding.
-%However, this does not unlock the full potential as only a graph-level representation is truly meaningful, for example,
-%to interpolate between variable-sized graphs or generate new ones by modifying the latent code.
-%As a consequence, a few graph-level methods have been proposed so far, all of which use some form of
-%node matching~\cite{winter2021pigvae,any2graph2024,grale2025} internally.
-Autoencoders are a well-studied method for unsupervised representation learning.
-High-dimensional inputs are mapped to a lower-dimensional representation by an encoder, serving as a form
-of compression.
-A decoder maps back the lower-dimensional representation back to the high-dimensional input, serving as a
-form of decompression.
-By learning the input-output mapping end-to-end, the model can learn to store only what is necessary in
-the latent representation.
-Due to their simplicity, autoencoders have been used for representation learning for every common domain.
-In this section, we review the most common families of autoencoders with a focus on the graph domain, which
-poses unique challenges in this framework.
+In the realm of graph generative modeling, there exist two classes of algorithms for graph generation.
+The first class generates graphs within a feedforward architecture and must account for the
+node order and validity~\cite{graphvae,de2018molgan,edmdiffusion,digress}.
+In practice, this often amounts to imposing or implicitly learning a canonicalization to make the reconstruction loss well-defined.
+The second class generates graphs sequentially, and as such the node ordering becomes
+implicit but needs to introduce additional training and inference procedures~\cite{graphrnn,gran,learning-deep-gen-graphs}
+as elements are generated one at a time.
+\textcolor{red}{TODO: state that sequential generation is superior since isomorphism is a harder problem to solve than iterative decoding}
 
 Early work introduces autoencoders~\cite{rumelhart1986learning,baldi1989neural,hinton2006autoencoder}
-as a form of non-linear dimensionality reduction.
+as a general form of non-linear dimensionality reduction and representation learning.
+Standard autoencoders are not constrained in any sense in how they learn a latent representation.
+As such, denoising~\cite{vincent2008dae} and contractive~\cite{rifai2011cae} introduce additional restrictions
+on the latent space for robustness while sparse~\cite{ng2011sparseae} versions aim for better interpretability.
+Specifically for graphs, variational graph autoencoders~\cite{vgae} have been proposed.
+However, this early version reconstructs on the node-level rather than graph-level.
+A graph-level extension has been proposed in~\cite{graphvae} in which the authors recognize the problematic
+setting of decoding graphs.
+The authors directly address graph isomorphism by introducing graph matching to find correspondences and to calculate losses.
+The work in~\cite{winter2021pigvae} goes one step further and establishes a line of work in which the model learns
+a canonical ordering internally, which they justify by the following argument.
+While we can represent a graph with a graph-level latent using permutation-invariant encoders, a decoder must, to
+learn the reconstruction via point-wise losses, infer the ordering.
+However, this model also needs to train a predictor of graph size from the latent.
+The work in~\cite{any2graph2024} proposes to view the problem through the lens of Supervised Graph Prediction (SGP).
+They seek to develop a permutation invariant distance for graphs and introduce a loss based on Optimal Transport that
+is permutation invariant and handles variable-sized inputs.
+A notable improvement is that their model, as it fully operates in graph embedding space, can decode arbitrary embeddings
+into graphs and as such is able to decode different input modalities to their corresponding graph representation.
+Combining the matching strategy of~\cite{winter2021pigvae} and the loss of~\cite{any2graph2024}, the authors of~\cite{grale2025}
+propose an architecture operating on both graph and node embeddings, where the graph-level embeddings serve as a latent
+representation and node-level embeddings are used for matching, achieving state-of-the-art results.
+
+
+In summary, graph autoencoders aim to propose loss functions that \ldots
 
 \begin{enumerate}
-    \item \cite{hinton2006autoencoder} (\citeyear{hinton2006autoencoder})
-    \begin{itemize}
-        \item early autoencoder
-        \item in general, nothing forces AE to extract structure at all
-    \end{itemize}
-
-    \item \cite{vincent2008dae} (\citeyear{vincent2008dae})
-    \begin{itemize}
-        \item denoising autoencoder aims to improve robustness of standard autoencoder
-    \end{itemize}
-
-    \item \cite{rifai2011cae} (\citeyear{rifai2011cae})
-    \begin{itemize}
-        \item contractive AEs also aim to learn robust representations by penalizing
-        sensitivity as measured as the Frobenius norm of the Jacobian
-    \end{itemize}
-
-    \item \cite{ng2011sparseae} (\citeyear{ng2011sparseae})
-    \begin{itemize}
-        \item sparse autoencoders
-    \end{itemize}
-
-    \item \cite{vgae} (\citeyear{vgae})
-    \begin{itemize}
-        \item original graph VAE, trains with EBLO, but evaluation is only done on link prediction tasks, on one large graph
-    \end{itemize}
-
-    \item \cite{larsen2016vaegan} (\citeyear{larsen2016vaegan})
-    \begin{itemize}
-        \item combines VAE and GAN
-    \end{itemize}
-
-    \item \cite{graphvae} (\citeyear{graphvae})
-    \begin{itemize}
-        \item next graph VAE, that actually is used as a generative model, probabilistic, fully-connected output, uses graph matching
-    \end{itemize}
-
-    \item \cite{hou2022graphmae} (\citeyear{hou2022graphmae})
-    \begin{itemize}
-        \item masked AE that works in node embeddings, with different masking strategies
-    \end{itemize}
-
-    \item \cite{winter2021pigvae} (\citeyear{winter2021pigvae})
-    \begin{itemize}
-        \item learns graph matching
-        \item needs ground-truth size
-    \end{itemize}
-
-    \item \cite{any2graph2024} (\citeyear{any2graph2024})
-    \begin{itemize}
-        \item precursor to GRALE, also uses OT, in contrast is size agnostic (how?)
-    \end{itemize}
-
-    \item \cite{grale2025} (\citeyear{grale2025})
-    \begin{itemize}
-        \item learns ordering via optimal transport
-    \end{itemize}
-
     \item \cite{jtvae} (\citeyear{jtvae})
     \begin{itemize}
         \item contracts graph into an element tree, need pre-processing
