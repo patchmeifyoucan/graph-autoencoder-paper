@@ -1,4 +1,5 @@
 \section{Introduction}\label{sec:introduction}
+\textcolor{red}{TODO: should start more general, with general representation learning on graphs or so.}
 Graph Neural Networks (GNNs) are a popular choice for learning tasks on graphs.
 Examples include molecules~\cite{gilmer2017mpnn}, road networks~\cite{derrow2021eta},
 or social and citation networks~\cite{kipf2017gcn}.
@@ -23,14 +24,15 @@ They have been applied for representation learning of different modalities like
 images~\cite{hinton2006autoencoder,vincent2008dae}, text~\cite{bowman2016generating}, and sound~\cite{zeghidour2021soundstream},
 which have well-defined input-output mappings in terms of their representation.
 
-Mapping back a graph embedding to a graph representation is challenging for the following reasons.
+Learning to map back a graph embedding to a graph representation is challenging for the following reasons.
 Besides their discrete and variable-sized nature, which also holds for images and text, it is their combinatorial
 and unordered nature that prevents direct, end-to-end optimization of the input-output mapping.
 The fundamental difficulty is related to graph isomorphism, i.e., by permuting the node order, we do not
 change the object we represent, and the same graph with $n$ nodes can be represented by $n!$ unique but equivalent representations.
-In addition, gradient descent assumes entries in the output to be i.i.d., which is not true for graphs.
+An ambiguous loss makes gradient descent ineffective as there is no consistent direction for loss calculation and parameter updates.
+Furthermore, gradient descent assumes entries in the output to be i.i.d., which is not true for graphs.
 In practice this means that by changing only one entry in an otherwise perfectly modeled output, one can create arbitrarily
-large errors in the actual representation which is not reflected the same way by the loss.
+large errors in the graph domain, e.g., by disconnecting the graph, which is not reflected the same way by the loss.
 The reconstruction target is an isomorphism class rather than a single point in space, and as a consequence,
 typical decoders are supervised against a single ordered representative.
 
@@ -40,4 +42,4 @@ In this work, we show that we can avoid dealing with graph isomorphism by framin
 as a sequential search procedure over embeddings of partial graphs, which removes the dependence on node orderings completely.
 By deciding at each step whether a particular graph fragment lies on a path towards the target, we are
 able to build latent-to-graph decoders that significantly outperform the state-of-the-art in terms of
-generating the correct graph from the latent.
+generating the correct graph from the latent for multiple modalities including graphs, images, and fixed encodings.
