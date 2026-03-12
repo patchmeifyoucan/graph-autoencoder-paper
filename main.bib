@@ -163,6 +163,21 @@
     url = {https://proceedings.neurips.cc/paper_files/paper/2021/hash/4f3d7d38d24b740c95da2b03dc3a2333-Abstract.html}
 }
 
+@article{duan2024graphcroc,
+  title={GraphCroc: Cross-Correlation Autoencoder for Graph Structural Reconstruction},
+  author={Duan, Shijin and Ding, Ruyi and He, Jiaxing and Ding, Aidong and Fei, Yunsi and Xu, Xiaolin},
+  journal={Advances in Neural Information Processing Systems},
+  volume={37},
+  pages={45409--45437},
+  year={2024}
+}
+
+@inproceedings{krzakala2024framework,
+  title={A framework for differentiable Supervised Graph Prediction},
+  author={Krzakala, Paul and Yang, Junjie and Flamary, R{\'e}mi and d'Alch{\'e}-Buc, Florence and Laclau, Charlotte and Labeau, Matthieu},
+  booktitle={ICML 2024 Workshop on Differentiable Almost Everything: Differentiable Relaxations, Algorithms, Operators, and Simulators}
+}
+
 @inproceedings{any2graph2024,
     title = {Any2Graph: Deep End-To-End Supervised Graph Prediction With An Optimal Transport Loss},
     author = {Krzakala, Paul and Yang, Junjie and Flamary, R{\'e}mi and d'Alch{\'e}-Buc, Florence and Laclau, Charlotte and Labeau, Matthieu},
@@ -222,6 +237,14 @@
     organization = {Springer}
 }
 
+@inproceedings{hou2022graphmae,
+    title = {GraphMAE: Self-supervised Masked Graph Autoencoders},
+    author = {Hou, Zhenyu and Liu, Xiao and Cen, Yukuo and Dong, Yuxiao and Yang, Hongxia and Wang, Chuanhui and Tang, Jie},
+    booktitle = {Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining},
+    pages = {594--604},
+    year = {2022}
+}
+
 @article{de2018molgan,
     title = {MolGAN: An implicit generative model for small molecular graphs},
     author = {De Cao, Nicola and Kipf, Thomas},
@@ -229,11 +252,11 @@
     year = {2018}
 }
 
-@inproceedings{edmdiffusion,
-    title = {Equivariant diffusion for molecule generation in 3d},
-    author = {Hoogeboom, Emiel and Satorras, V{\i}ctor Garcia and Vignac, Cl{\'e}ment and Welling, Max},
+@inproceedings{scorebased,
+    title = {Score-based generative modeling of graphs via the system of stochastic differential equations},
+    author = {Jo, Jaehyeong and Lee, Seul and Hwang, Sung Ju},
     booktitle = {International conference on machine learning},
-    pages = {8867--8887},
+    pages = {10362--10383},
     year = {2022},
     organization = {PMLR}
 }
@@ -245,23 +268,29 @@
     year = {2022}
 }
 
-
-@inproceedings{scorebased,
-    title = {Score-based generative modeling of graphs via the system of stochastic differential equations},
-    author = {Jo, Jaehyeong and Lee, Seul and Hwang, Sung Ju},
-    booktitle = {International conference on machine learning},
-    pages = {10362--10383},
-    year = {2022},
+@inproceedings{chen2023edge,
+    title = {Efficient and Degree-Guided Graph Generation via Discrete Diffusion Modeling},
+    author = {Chen, Xiaohui and He, Jiajing and Han, Xu and Liu, Li-Ping},
+    booktitle = {International Conference on Machine Learning (ICML)},
+    pages = {4585--4610},
+    year = {2023},
     organization = {PMLR}
 }
 
+@inproceedings{disco2024,
+    title = {Discrete-state Continuous-time Diffusion for Graph Generation},
+    author = {Zhang, Olga and Madeira, Manuel and Toni, Laura and Frossard, Pascal},
+    booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+    year = {2024}
+}
 
-@inproceedings{hou2022graphmae,
-    title = {Graphmae: Self-supervised masked graph autoencoders},
-    author = {Hou, Zhenyu and Liu, Xiao and Cen, Yukuo and Dong, Yuxiao and Yang, Hongxia and Wang, Chunjie and Tang, Jie},
-    booktitle = {Proceedings of the 28th ACM SIGKDD conference on knowledge discovery and data mining},
-    pages = {594--604},
-    year = {2022}
+@inproceedings{edmdiffusion,
+    title = {Equivariant diffusion for molecule generation in 3d},
+    author = {Hoogeboom, Emiel and Satorras, V{\i}ctor Garcia and Vignac, Cl{\'e}ment and Welling, Max},
+    booktitle = {International conference on machine learning},
+    pages = {8867--8887},
+    year = {2022},
+    organization = {PMLR}
 }
 
 %=== Sequential Graph Generative Models
@@ -275,6 +304,30 @@
     organization = {PMLR}
 }
 
+@article{learning-deep-gen-graphs,
+    title = {Learning deep generative models of graphs},
+    author = {Li, Yujia and Vinyals, Oriol and Dyer, Chris and Pascanu, Razvan and Battaglia, Peter},
+    journal = {arXiv preprint arXiv:1803.03324},
+    year = {2018}
+}
+
+@article{gcpn,
+    title = {Graph convolutional policy network for goal-directed molecular graph generation},
+    author = {You, Jiaxuan and Liu, Bowen and Ying, Zhitao and Pande, Vijay and Leskovec, Jure},
+    journal = {Advances in neural information processing systems},
+    volume = {31},
+    year = {2018}
+}
+
+@inproceedings{grover2019graphite,
+  title={Graphite: Iterative generative modeling of graphs},
+  author={Grover, Aditya and Zweig, Aaron and Ermon, Stefano},
+  booktitle={International conference on machine learning},
+  pages={2434--2444},
+  year={2019},
+  organization={PMLR}
+}
+
 @article{gran,
     title = {Efficient graph generation with graph recurrent attention networks},
     author = {Liao, Renjie and Li, Yujia and Song, Yang and Wang, Shenlong and Hamilton, Will and Duvenaud, David K and Urtasun, Raquel and Zemel, Richard},
@@ -283,12 +336,6 @@
     year = {2019}
 }
 
-@article{learning-deep-gen-graphs,
-    title = {Learning deep generative models of graphs},
-    author = {Li, Yujia and Vinyals, Oriol and Dyer, Chris and Pascanu, Razvan and Battaglia, Peter},
-    journal = {arXiv preprint arXiv:1803.03324},
-    year = {2018}
-}
 
 # Molecule Generators
 
@@ -315,4 +362,10 @@
     author = {Kearnes, Steven and Li, Li and Riley, Patrick},
     journal = {arXiv preprint arXiv:1904.08915},
     year = {2019}
+}
+
+@article{mercadopractical,
+  title={Practical notes on building molecular graph generative models. ChemRxiv, 2020},
+  author={Mercado, R and Rastemo, T and Lindelof, E and Klambauer, G and Engkvist, O and Bjerrum, EJ},
+  journal={Preprint}
 }

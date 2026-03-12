@@ -1,77 +1,104 @@
 \section{Related work}\label{sec:related-work}
-\textcolor{red}{TODO: section should review not autoencoder but generators of graphs, where decoders are one special case.}
-\textcolor{red}{TODO: even GRALE is not 100\% unsupervised since labels are generated for matching}
+\textcolor{red}{TODO: describe diffusion models as in between?}
+\textcolor{red}{
+    TODO: IMPORTANT! describe everything in a view that the model solves isomorphism OUTSIDE the model and not inside.
+    make it a solution rather than a problem shift since all other methods solve iso in the model. write it in a way
+    that sees the transfer as analogy between one-shot and sequential generators, ie, introducing a sequential algorithm class for
+    exact decoding similar as for generative models.
+}
+\textcolor{red}{
+    TODO: section should review not autoencoder but generators of graphs, where decoders are one special case.
+}\\
+\textcolor{red}{TODO: even GRALE is not 100\% unsupervised since labels are generated for matching}\\
+\textcolor{red}{TODO: Molecule generators: this~\cite{mercadopractical}.}\\
+\textcolor{red}{TODO: state that sequential generation is superior since isomorphism is a harder problem to solve than iterative decoding}\\
 
-In this section, we review methods for graph generation from two branches in the literature.
-First, from the point of view of graph generative modeling, we highlight common problems and solutions
-when generating graphs.
-Second, we review the literature on the more recently proposed graph autoencoders, aim to generate
-a particular graph from a latent representation.
-There is no strict separation between these two fields as they solve related problems.
-The main difference is that graph generative models aim to learn to generate graphs from a particular graph distribution
-whereas graph autoencoders aim to generate a particular graphs.
-Central to both branches is the exact procedure generating the graphs.
-As such, the concept of variational graph autoencoders lies in between these two branches.\\
-\textcolor{red}{TODO: organize section such that the flow goes from generative $\rightarrow$ generative AE $\rightarrow$ AE}
-\textcolor{red}{TODO: explain that only work is reviewed that focuses on generation and not other problems}
+In this paper, we study the decoding of graphs from vector representations, e.g., a graph-level embedding produced
+by an encoder or obtained from a fixed algorithm, to the actual graph.
+This setting is distinct from \emph{unconditional} graph generative modeling, in which the objective is to learn to generate
+graphs similar to those of a reference distribution.
+However, as both concepts need to derive procedures for generating the graph, it serves as the conceptual foundation of decoder
+design, in particular regarding one-shot versus sequential construction and mechanisms for handling graph representation and isomorphism
+as well as validity constraints, if any.
 
-In the realm of graph generative modeling, there exist two classes of algorithms for graph generation.
-The first class generates graphs within a feedforward architecture and must account for the
-node order and validity~\cite{graphvae,de2018molgan,edmdiffusion,digress}.
-In practice, this often amounts to imposing or implicitly learning a canonicalization to make the reconstruction loss well-defined.
-The second class generates graphs sequentially, and as such the node ordering becomes
-implicit but needs to introduce additional training and inference procedures~\cite{graphrnn,gran,learning-deep-gen-graphs}
-as elements are generated one at a time.
-\textcolor{red}{TODO: state that sequential generation is superior since isomorphism is a harder problem to solve than iterative decoding}
+\paragraph{One-shot vs. sequential generation.}
+Generative models for graphs primarily aim to model an underlying distribution with the ultimate goal
+of being able to sample new items following this distribution.
+They focus less on representing single samples exactly.
+One-shot methods such as variational graph autoencoders~\cite{vgae,graphvae} represent the output graph as a single object
+in Euclidean space and optimize the graph with point-wise losses for reconstruction, similar to images.
+While these approaches are computationally efficient and simple to implement with feedforward architectures,
+they inherently output an explicitly ordered representation of the graph and thus need to account for graph isomorphism during training.
+Since graph isomorphism is a challenging problem to solve, another line of research focuses on generating graphs
+sequentially~\cite{graphrnn,gran,learning-deep-gen-graphs,grover2019graphite}.
+Generating the graph one element at a time, these models learn to predict the next step recursively by taking into account
+partial results and as such, make the node order implicit and do not suffer from graph isomorphism.
+However, sequential methods must devise a generation procedure involving several forward passes for inference as well as step-wise supervision
+of the process for training.
+Their recursive nature makes generation inherently slower than one-shot generation but allows for more flexible and controlled generation.
 
-Early work introduces autoencoders~\cite{rumelhart1986learning,baldi1989neural,hinton2006autoencoder}
-as a general form of non-linear dimensionality reduction and representation learning.
-Standard autoencoders are not constrained in any sense in how they learn a latent representation.
-As such, denoising~\cite{vincent2008dae} and contractive~\cite{rifai2011cae} introduce additional restrictions
-on the latent space for robustness while sparse~\cite{ng2011sparseae} versions aim for better interpretability.
-Specifically for graphs, variational graph autoencoders~\cite{vgae} have been proposed.
-However, this early version reconstructs on the node-level rather than graph-level.
-A graph-level extension has been proposed in~\cite{graphvae} in which the authors recognize the problematic
-setting of decoding graphs.
-The authors directly address graph isomorphism by introducing graph matching to find correspondences and to calculate losses.
-The work in~\cite{winter2021pigvae} goes one step further and establishes a line of work in which the model learns
-a canonical ordering internally, which they justify by the following argument.
-While we can represent a graph with a graph-level latent using permutation-invariant encoders, a decoder must, to
-learn the reconstruction via point-wise losses, infer the ordering.
-However, this model also needs to train a predictor of graph size from the latent.
-The work in~\cite{any2graph2024} proposes to view the problem through the lens of Supervised Graph Prediction (SGP).
-They seek to develop a permutation invariant distance for graphs and introduce a loss based on Optimal Transport that
-is permutation invariant and handles variable-sized inputs.
-A notable improvement is that their model, as it fully operates in graph embedding space, can decode arbitrary embeddings
-into graphs and as such is able to decode different input modalities to their corresponding graph representation.
-Combining the matching strategy of~\cite{winter2021pigvae} and the loss of~\cite{any2graph2024}, the authors of~\cite{grale2025}
-propose an architecture operating on both graph and node embeddings, where the graph-level embeddings serve as a latent
+
+\paragraph{Unconditional vs. conditional generation.}
+Besides algorithmic differences in how to generate a graph, there are also differences in the objective of graph generation,
+As generative modeling aims to generate graphs representative of a reference distribution and without restrictions of
+which graph to generate, we call this branch \emph{unconditional generation}.
+This form of generation is mature and well-studied, and the earliest approaches date back to ER and BA graphs\textcolor{red}{(cite)}.
+\textcolor{red}{Explain modern neural network versions}.
+As unconditional graph generation is rather unrestricted, these methods scale to large unattributed graphs~\cite{graphrnn,gran}
+or smaller attributed graphs, e.g., small molecules~\cite{learning-deep-gen-graphs}.
+However, these methods are unable to generate a specific graph given their unconditional nature.
+In contrast, powerful methods for conditional graph generation may be used in a wide spectrum of tasks, e.g.,
+whenever the underlying task is to translate an input to a graph.
+For example, a model generating graphs conditioned on an image embedding can solve a wide array of problems, including
+the extraction of graphs from an image.
+As such, another line of research focuses on building conditional graph generators.
+
+Building on the seminal work of variational graph autoencoders~\cite{vgae}, which only reconstruct the graph
+based on their given nodes, the authors of~\cite{graphvae} propose the first graph-level extension.
+They recognize that graph isomorphism is the inherent problem of reconstructing graphs in the autoencoder framework
+and propose to introduce graph matching to find correspondences and to calculate losses pointwise as in regular
+autoencoders.
+In~\cite{winter2021pigvae}, the authors introduce a permutation-invariant graph variational autoencoder (PIGVAE).
+This work goes one step further and establishes an architectural design in which the model learns a canonical ordering internally.
+The authors explain it with the argument that during global aggregation, the node order is lost in the graph latent.
+As such, a model needs to learn to infer it, which they solve by introducing an additional predictor of graph size from the latent
+as well as a permuter model that predicts the alignment.
+More recently, a line of research has been proposed under the term of Supervised Graph Prediction (SGP), in which the authors
+go one step further and develop some of the first methods that directly translate different modalities into
+graphs~\cite{krzakala2024framework,any2graph2024, grale2025}.
+In~\cite{any2graph2024}, the authors seek to develop a permutation-invariant distance for graphs and introduce a loss based
+on Optimal Transport that is permutation invariant and handles variable-sized inputs.
+A notable improvement is that their model, Any2Graph, can decode arbitrary embeddings of different input modalities into their corresponding
+graph representation.
+In follow-up work~\cite{grale2025}, the authors combine the loss introduced for Any2Graph and the matching strategy of PIGVAE.
+The resulting architecture, GRALE, operates on both graph and node embeddings, where the graph-level embeddings serve as a latent
 representation and node-level embeddings are used for matching, achieving state-of-the-art results.
 
-
-In summary, graph autoencoders aim to propose loss functions that \ldots
-
-\begin{enumerate}
-    \item \cite{jtvae} (\citeyear{jtvae})
-    \begin{itemize}
-        \item contracts graph into an element tree, need pre-processing
-        \item unclear why this needs to be variational
-        \item learning predicts the connections of subgraphs to the tree
-        \item \textbf{encoding and decoding is stochastic, our method is exact}
-        \item \textbf{scoring remotely similar, but subgraph decoding does not have all this model machinery}
-        \item \textbf{\red{they use ZINC and achieve a reconstruction accuracy of 76.7\%, this is easily beatable}}
-        \item also the argument that atom-by-atom generates invalid results is not always true
-    \end{itemize}
-
-    \item \cite{jin2020hierarchical} (\citeyear{jin2020hierarchical})
-    \begin{itemize}
-        \item uses larger motifs, depends on extracting them, paper extracts 436 different ones
-    \end{itemize}
-
-    \item \cite{kearnes2019decoding} (\citeyear{kearnes2019decoding})
-    \begin{itemize}
-        \item uses RL, achieved only 66\% on QM9, also reports that \cite{jtvae} also does not achieve much higher accuracies
-    \end{itemize}
-
-
-\end{enumerate}
+%
+%In summary, graph autoencoders aim to propose loss functions that \ldots
+%
+%
+%\begin{enumerate}
+%    \item \cite{jtvae} (\citeyear{jtvae})
+%    \begin{itemize}
+%        \item contracts graph into an element tree, need pre-processing
+%        \item unclear why this needs to be variational
+%        \item learning predicts the connections of subgraphs to the tree
+%        \item \textbf{encoding and decoding is stochastic, our method is exact}
+%        \item \textbf{scoring remotely similar, but subgraph decoding does not have all this model machinery}
+%        \item \textbf{\red{they use ZINC and achieve a reconstruction accuracy of 76.7\%, this is easily beatable}}
+%        \item also the argument that atom-by-atom generates invalid results is not always true
+%    \end{itemize}
+%
+%    \item \cite{jin2020hierarchical} (\citeyear{jin2020hierarchical})
+%    \begin{itemize}
+%        \item uses larger motifs, depends on extracting them, paper extracts 436 different ones
+%    \end{itemize}
+%
+%    \item \cite{kearnes2019decoding} (\citeyear{kearnes2019decoding})
+%    \begin{itemize}
+%        \item uses RL, achieved only 66\% on QM9, also reports that \cite{jtvae} also does not achieve much higher accuracies
+%    \end{itemize}
+%
+%
+%\end{enumerate}

@@ -1,1 +1,13 @@
 \section{Method}\label{sec:method}
+\textcolor{red}{explain that using iterative permutation invariant embeddings is some form of implicit marginalization of the permutation class}
+\textcolor{red}{explain why to argue against direct reconstructions again random permutation}
+\textcolor{red}{explain connection to GCPN for RL motivation and DGM as link prediction on the graph-level}
+good method must
+\begin{itemize}
+    \item be permutation-invariant
+    \item handle-variable sized inputs (no padding)
+    \item problematic: alignment methods are optimized towards one permutation, memoization instead of generalization
+    \item avoid reintroducing node order at any point, graph level should be graph level and not mix
+    \item any2graph and grale are not size-agnostic since they use a maximum size but do this with masking
+    \item not solve GI internally
+\end{itemize}
