@@ -1,7 +1,25 @@
 \section{Method}\label{sec:method}
+\textcolor{red}{TODO: describe diffusion models as in between?}
+\textcolor{red}{
+    TODO: IMPORTANT! describe everything in a view that the model solves isomorphism OUTSIDE the model and not inside.
+    make it a solution rather than a problem shift since all other methods solve iso in the model. write it in a way
+    that sees the transfer as analogy between one-shot and sequential generators, ie, introducing a sequential algorithm class for
+    exact decoding similar as for generative models.
+}
+\textcolor{red}{
+    TODO: section should review not autoencoder but generators of graphs, where decoders are one special case.
+}\\
+\textcolor{red}{TODO: even GRALE is not 100\% unsupervised since labels are generated for matching}\\
+\textcolor{red}{TODO: Molecule generators: this~\cite{mercadopractical}.}\\
+\textcolor{red}{TODO: state that sequential generation is superior since isomorphism is a harder problem to solve than iterative decoding}\\
 \textcolor{red}{explain that using iterative permutation invariant embeddings is some form of implicit marginalization of the permutation class}
-\textcolor{red}{explain why to argue against direct reconstructions again random permutation}
+\textcolor{red}{explain why to argue against direct reconstructions against a single random permutation}
 \textcolor{red}{explain connection to GCPN for RL motivation and DGM as link prediction on the graph-level}
+\textcolor{red}{explain that graph embeddings are a single source of truth for representation, other than adj. mat., PyG style or adjacency lists}
+
+%GRAN does not even generate the graphs that are in their paper...
+%https://github.com/lrjconan/GRAN/blob/master/runner/gran_runner.py#L320
+
 good method must
 \begin{itemize}
     \item be permutation-invariant
@@ -10,4 +28,11 @@ good method must
     \item avoid reintroducing node order at any point, graph level should be graph level and not mix
     \item any2graph and grale are not size-agnostic since they use a maximum size but do this with masking
     \item not solve GI internally
+    \item have controlled generation for validity
+
 \end{itemize}
+
+In this section, we further analyze the existing body of work and identify desirable and undesirable properties
+of deep graph decoders.
+
+\paragraph{Addressing graph isomorphism.}

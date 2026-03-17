@@ -1,8 +1,5 @@
 \section{Introduction}\label{sec:introduction}
-\textcolor{red}{TODO: should start more general, with general representation learning on graphs or so.}
-Graph Neural Networks (GNNs) are a popular choice for learning tasks on graphs.
-Examples include molecules~\cite{gilmer2017mpnn}, road networks~\cite{derrow2021eta},
-or social and citation networks~\cite{kipf2017gcn}.
+Graph Neural Networks (GNNs) are a class of neural models designed for learning on graph-structured data.
 The power of GNNs stems from their ability to encode complex, discrete objects
 into dense, semantic vectors serving as the representation of a graph.
 They do so by iteratively propagating node features across neighbors, potentially taking
@@ -10,8 +7,17 @@ edge features into account.
 In a final global pooling step, the node information is fused into a graph-level embedding
 representing the graph.
 
-However, recovering the graph input from the embedding poses several challenges, as the
-vector only semantically encodes information like graph size, type distributions, and connectivity.
+However, learning to map back a graph embedding to the actual graph representation is challenging for the following reasons.
+Besides their discrete and variable-sized nature, which also holds for images and text, it is their combinatorial
+and unordered nature that prevents direct, end-to-end optimization of the input-output mapping.
+The fundamental difficulty is related to graph isomorphism, i.e., by permuting the node order, we do not
+change the object we represent, and the same graph with $n$ nodes can be represented by $n!$ unique but equivalent representations.
+An ambiguous loss makes gradient descent ineffective as there is no consistent direction for loss calculation and parameter updates.
+Furthermore, gradient descent assumes entries in the output to be i.i.d., which is not true for graphs.
+In practice this means that by changing only one entry in an otherwise perfectly modeled output, one can create arbitrarily
+large errors in the graph domain, e.g., by disconnecting the graph, which is not reflected the same way by the loss.
+With many equivalent representations, the reconstruction target is an isomorphism class rather than a single point in space.
+
 Traditionally, encoding-decoding tasks are formulated under the umbrella term of autoencoders, where a
 neural network learns to map a high-dimensional object to a lower-dimensional code while being
 able to map back the code to the input representation.
@@ -23,18 +29,7 @@ masked autoencoders~\cite{he2022mae}, or variational autoencoders~\cite{vaes}.
 They have been applied for representation learning of different modalities like
 images~\cite{hinton2006autoencoder,vincent2008dae}, text~\cite{bowman2016generating}, and sound~\cite{zeghidour2021soundstream},
 which have well-defined input-output mappings in terms of their representation.
-
-Learning to map back a graph embedding to a graph representation is challenging for the following reasons.
-Besides their discrete and variable-sized nature, which also holds for images and text, it is their combinatorial
-and unordered nature that prevents direct, end-to-end optimization of the input-output mapping.
-The fundamental difficulty is related to graph isomorphism, i.e., by permuting the node order, we do not
-change the object we represent, and the same graph with $n$ nodes can be represented by $n!$ unique but equivalent representations.
-An ambiguous loss makes gradient descent ineffective as there is no consistent direction for loss calculation and parameter updates.
-Furthermore, gradient descent assumes entries in the output to be i.i.d., which is not true for graphs.
-In practice this means that by changing only one entry in an otherwise perfectly modeled output, one can create arbitrarily
-large errors in the graph domain, e.g., by disconnecting the graph, which is not reflected the same way by the loss.
-The reconstruction target is an isomorphism class rather than a single point in space, and as a consequence,
-typical decoders are supervised against a single ordered representative.
+However, this is not true for the graph domain.
 
 Given these fundamental issues, we believe that optimizing a graph's output representation directly via gradient descent is inherently
 ill-posed for graph reconstruction or decoding.
